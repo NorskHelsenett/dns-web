@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Use these (bg-surface, text-ink, ...) instead of raw colors,
+ * so color and typography stay consistent across features.
+ * Dark values are in the media query below; components never need dark: variants.
+ * Fonts are system fonts on purpose: the app must not load anything from external origins.
+ * Palette: Norsk Helsenett brand guide. Status colors and muted text are not in the guide.
+ */
+@theme {
+  --font-sans: Arial, "Helvetica Neue", Helvetica, sans-serif;
+
+  /* Surfaces and text */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f2f2;
+  --color-ink: #000000;
+  --color-ink-muted: #5b5e61;
+  --color-line: #dcddde;
+  --color-line-strong: #808285;
+  /* borders of inputs and other controls */
+  --color-focus: #00467a;
+
+  /* Brand */
+  --color-brand-100: #c4f2da;
+  --color-brand-300: #7befb2;
+  --color-brand-600: #015945;
+  /* buttons, links */
+  --color-brand-700: #002920;
+  /* hover */
+  --color-on-brand: #ffffff;
+  /* text on brand-600 */
+
+  /* Status: fg = text and icon, bg = tinted background, border = outline */
+  --color-danger-fg: #b42318;
+  --color-danger-bg: #fef3f2;
+  --color-danger-border: #d92d20;
+  --color-warning-fg: #8a3b00;
+  --color-warning-bg: #fff4dc;
+  --color-warning-border: #e85800;
+  --color-success-fg: #015945;
+  --color-success-bg: #e3f6ec;
+  --color-success-border: #247360;
+  --color-info-fg: #00467a;
+  --color-info-bg: #e6f0f8;
+  --color-info-border: #00467a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: #0e1613;
+    --color-surface-muted: #16211d;
+    --color-ink: #f1f2f2;
+    --color-ink-muted: #a9adb0;
+    --color-line: #2b3a35;
+    --color-line-strong: #6f7a75;
+    --color-focus: #9cc8ee;
+
+    --color-brand-100: #123a2c;
+    --color-brand-300: #7befb2;
+    --color-brand-600: #7befb2;
+    --color-brand-700: #c4f2da;
+    --color-on-brand: #002920;
+
+    --color-danger-fg: #ffb4ab;
+    --color-danger-bg: #3b1511;
+    --color-danger-border: #f97066;
+    --color-warning-fg: #ffc46b;
+    --color-warning-bg: #33230a;
+    --color-warning-border: #ffc46b;
+    --color-success-fg: #7befb2;
+    --color-success-bg: #0f2e22;
+    --color-success-border: #02a67f;
+    --color-info-fg: #9cc8ee;
+    --color-info-bg: #0d2438;
+    --color-info-border: #5b9bd1;
+  }
+}
+
+:root {
+  color-scheme: light dark;
+  /* native controls and scrollbars follow the theme */
+}
+
+body {
+  @apply bg-surface font-sans text-ink antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

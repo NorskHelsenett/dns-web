@@ -1,0 +1,6 @@
+{
+  "_comment": "If you add a field here, also add it to src/app/config/appConfig.ts",
+  "orgName": "NHN",
+  "apiBaseUrl": "/api",
+  "defaultLocale": "nb"
+}
