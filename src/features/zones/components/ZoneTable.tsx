@@ -27,10 +27,6 @@ export function ZoneTable({ zones }: { zones: Zone[] }) {
         <span>{t("zones.tabs.all")}</span>
         <span className={tabNumberStyles}>{zones.length}</span>
       </span>
-      <span className={tabStyles}>
-        <span>{t("zones.tabs.favorites")}</span>
-        <span className={tabNumberStyles}>{zones.filter((z) => z.favorited).length}</span>
-      </span>
 
       <div className="ml-auto flex flex-wrap gap-2">
         <label className="sr-only" htmlFor="zone-view">{t("zones.view")}</label>
