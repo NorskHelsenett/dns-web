@@ -16,6 +16,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      "/v1": "http://localhost:18080",
+    },
+  },
   resolve: {
     alias: { "@": path.resolve(import.meta.dirname, "src") },
   },

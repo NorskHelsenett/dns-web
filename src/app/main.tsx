@@ -7,7 +7,10 @@ import { initI18n } from "@/lib/i18n";
 import { routeTree } from "./routeTree.gen";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import type { ParseKeys } from "i18next";
+import type { Zone } from "@/features/zones/types/zone";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient()
 const router = createRouter({ routeTree });
 
 declare module "@tanstack/react-router" {
@@ -20,7 +23,6 @@ declare module "@tanstack/react-router" {
 }
 
 // TODO: Remove once fetch of zone with API
-import type { Zone } from "@/features/zones/types/zone";
 
 declare module "@tanstack/react-router" {
   interface HistoryState {
@@ -39,7 +41,9 @@ async function start() {
     await initI18n(config.defaultLocale);
     root.render(
       <StrictMode>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </StrictMode>,
     );
   } catch (error) {
