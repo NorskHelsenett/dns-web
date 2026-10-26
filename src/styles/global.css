@@ -279,4 +279,7 @@ body {
   .box-y-margin {
     @apply my-4;
   }
+  .page-flex-setup {
+    @apply flex flex-col gap-6;
+  }
 }
