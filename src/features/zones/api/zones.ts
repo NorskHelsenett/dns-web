@@ -1,19 +1,14 @@
 import { zonePaginationSchema, zoneWithRecordsSchema } from "../types/zone";
+import { apiGet, apiPost } from "@/services/apiClient";
 
 export async function fetchZones() {
-  const res = await fetch("/v1/zones/filter", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  return apiPost("/v1/zones/filter", zonePaginationSchema, {
+    body: {
       Filters: [{ Field: "name", MatchMode: "wildcard", Value: "*" }],
-    }),
+    },
   });
-  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-  return zonePaginationSchema.parse(await res.json());
 }
 
 export async function fetchZoneWithRecords(uid: string) {
-  const res = await fetch(`/v1/zones/${uid}/withRecords`);
-  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-  return zoneWithRecordsSchema.parse(await res.json());
+  return apiGet(`/v1/zones/${encodeURIComponent(uid)}/withRecords`, zoneWithRecordsSchema);
 }

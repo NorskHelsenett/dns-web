@@ -7,11 +7,16 @@ import { initI18n } from "@/lib/i18n";
 import { routeTree } from "./routeTree.gen";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import type { ParseKeys } from "i18next";
-import type { Zone } from "@/features/zones/types/zone";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient()
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  context: { queryClient },
+  defaultPreload: "intent",
+  defaultPreloadDelay: 100,
+  defaultPreloadStaleTime: 0,
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -19,14 +24,6 @@ declare module "@tanstack/react-router" {
   }
   interface StaticDataRouteOption {
     crumb?: ParseKeys;
-  }
-}
-
-// TODO: Remove once fetch of zone with API
-
-declare module "@tanstack/react-router" {
-  interface HistoryState {
-    zone?: Zone;
   }
 }
 
@@ -48,6 +45,14 @@ async function start() {
     );
   } catch (error) {
     console.error("start failed", error);
+    root.render(
+      <main className="p-8" role="alert">
+        <h1 className="text-xl font-semibold">Unable to start the DNS panel</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Check that the application configuration and API are available, then reload the page.
+        </p>
+      </main>,
+    );
   }
 }
 
