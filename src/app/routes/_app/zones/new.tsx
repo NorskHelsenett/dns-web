@@ -11,7 +11,7 @@ function NewZonePage() {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="page-flex-setup">
       <h1 className="text-4xl font-medium">{t("zones.newZone")}</h1>
       <ZoneForm /> 
     </div>

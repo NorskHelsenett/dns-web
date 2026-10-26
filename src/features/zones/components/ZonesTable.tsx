@@ -3,11 +3,11 @@ import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/DataTable";
 import { Input } from "@/components/ui/input";
-import { zoneColumns } from "./ZoneColumns";
+import { zonesColumns } from "./ZonesColumns";
 import type { Zone } from "../types/zone";
 import { tabNumberStyles, tabStyles } from "../styles/tableStyles";
 
-export function ZoneTable({ zones }: { zones: Zone[] }) {
+export function ZonesTable({ zones }: { zones: Zone[] }) {
   const { t } = useTranslation();
   const [view, setView] = useState("");
   const [query, setQuery] = useState("");
@@ -57,5 +57,5 @@ export function ZoneTable({ zones }: { zones: Zone[] }) {
     </div>
   );
 
-  return <DataTable columns={zoneColumns} data={visible} getRowId={(z: Zone) => z.uid} toolbar={toolbar} />;
+  return <DataTable columns={zonesColumns} data={visible} getRowId={(z: Zone) => z.uid} toolbar={toolbar} />;
 }

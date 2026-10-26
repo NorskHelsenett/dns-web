@@ -35,7 +35,9 @@ function buildUrl(path: string, query?: Query): string {
     if (value !== undefined) params.set(key, String(value));
   }
   const queryString = params.toString();
-  return `${settings.baseUrl}${path}${queryString ? `?${queryString}` : ""}`;
+  const baseUrl = settings.baseUrl.replace(/\/$/, "");
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${baseUrl}${normalizedPath}${queryString ? `?${queryString}` : ""}`;
 }
 
 async function readJson(response: Response): Promise<unknown> {
@@ -122,6 +124,16 @@ export async function apiGet<T>(
   options: Pick<RequestOptions, "query" | "signal"> = {},
 ): Promise<T> {
   const response = await send("GET", path, options);
+  return parseBody(schema, await readJson(response));
+}
+
+/** Query: fetches data through a POST endpoint and validates its response. */
+export async function apiPost<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  options: Pick<RequestOptions, "body" | "signal"> = {},
+): Promise<T> {
+  const response = await send("POST", path, options);
   return parseBody(schema, await readJson(response));
 }
 
