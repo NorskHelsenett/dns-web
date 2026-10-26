@@ -12,7 +12,7 @@ export const zoneSchema = z.object({
 });
 
 export const zoneSchemaWithFavorite = zoneSchema.extend({
-  favorited: z.boolean(),
+  favorited: z.boolean().optional(),
 });
 
 export type Zone = z.infer<typeof zoneSchema>;
