@@ -210,4 +210,11 @@ export const en: Translations = {
     empty: "No results",
     showing: "Showing {{from}}-{{to}} of {{total}}",
   },
+  records: {
+    type: "Type",
+    ttl: "TTL",
+    value: "Verdi",
+    allTypes: "Alle typer",
+    search: "Search",
+  },
 };

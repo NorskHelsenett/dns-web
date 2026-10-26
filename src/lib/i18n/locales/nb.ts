@@ -211,6 +211,13 @@ export const nb = {
     empty: "Tomt resultat",
     showing: "Viser {{from}}-{{to}} av {{total}}",
   },
+  records: {
+    type: "Type",
+    ttl: "TTL",
+    value: "Verdi",
+    allTypes: "Alle typer",
+    search: "Search",
+  },
 } as const;
 
 /** The shape every language file must follow. */
