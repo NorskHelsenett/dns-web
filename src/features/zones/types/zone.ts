@@ -1,3 +1,4 @@
+import { recordSchema } from "@/features/records";
 import { paginatedSchema } from "@/lib/schemas/paginated";
 import z from "zod";
 
@@ -20,15 +21,8 @@ export const zoneListSchema = z.array(zoneSchemaWithFavorite);
 export const zonePaginationSchema = paginatedSchema(zoneSchema);
 export type ZonePagination = z.infer<typeof zonePaginationSchema>;
 
-const recordBase = z.looseObject({
-  uid: z.string(),
-  zoneuid: z.string().optional(),
-  comment: z.string().optional(),
-});
-
 export const zoneWithRecordsSchema = zoneSchema.extend({
-  records: z.array(recordBase),
+  records: z.array(recordSchema),
 });
 
-export type ZoneRecord = z.infer<typeof recordBase>;
 export type ZoneWithRecords = z.infer<typeof zoneWithRecordsSchema>;

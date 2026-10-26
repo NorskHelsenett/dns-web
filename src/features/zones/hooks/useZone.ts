@@ -1,9 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchZoneWithRecords } from "../api/zones";
-import { zoneKeys } from "./queryKeys";
+import { zoneQueryOptions } from "../api/queries";
 
-export const useZone = (uid: string) =>
-  useQuery({
-    queryKey: zoneKeys.detail(uid),
-    queryFn: () => fetchZoneWithRecords(uid),
-  });
+export const useZone = (uid: string) => useQuery(zoneQueryOptions(uid));
