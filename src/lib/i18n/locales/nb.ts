@@ -11,6 +11,7 @@ export const nb = {
     id: "ID",
     comment: "Kommentar",
     seconds: "sekunder",
+    loading: "Laster inn …",
   },
   errors: {
     cannotLoadApp: "Kunne ikke starte applikasjonen",
@@ -46,6 +47,14 @@ export const nb = {
     zone: "Sone",
     zones: "Soner",
     newZone: "Ny sone",
+    detail: {
+      status: "Status",
+      ttl: "TTL",
+      view: "Visning",
+      description: "Beskrivelse",
+      noDescription: "Ingen beskrivelse",
+      notAvailable: "Ikke tilgjengelig",
+    },
     form: {
       zone: {
         title: "Sone",
@@ -215,8 +224,10 @@ export const nb = {
     type: "Type",
     ttl: "TTL",
     value: "Verdi",
-    allTypes: "Alle typer",
-    search: "Search",
+    tabs: {
+      all: "Alle",
+    },
+    search: "Søk",
   },
 } as const;
 
