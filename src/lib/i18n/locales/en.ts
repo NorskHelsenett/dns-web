@@ -10,6 +10,7 @@ export const en: Translations = {
     id: "ID",
     comment: "Comment",
     seconds: "seconds",
+    loading: "Loading …",
   },
   errors: {
     cannotLoadApp: "Cannot start the application",
@@ -45,6 +46,14 @@ export const en: Translations = {
     zone: "Zone",
     zones: "Zones",
     newZone: "New zone",
+    detail: {
+      status: "Status",
+      ttl: "TTL",
+      view: "View",
+      description: "Description",
+      noDescription: "No description",
+      notAvailable: "Not available",
+    },
     form: {
       zone: {
         title: "Zone",
@@ -213,8 +222,10 @@ export const en: Translations = {
   records: {
     type: "Type",
     ttl: "TTL",
-    value: "Verdi",
-    allTypes: "Alle typer",
+    value: "Value",
+    tabs: {
+      all: "All",
+    },
     search: "Search",
   },
 };

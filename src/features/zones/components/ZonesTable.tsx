@@ -5,7 +5,7 @@ import { DataTable } from "@/components/data-table/DataTable";
 import { Input } from "@/components/ui/input";
 import { zonesColumns } from "./ZonesColumns";
 import type { Zone } from "../types/zone";
-import { tabNumberStyles, tabStyles } from "../styles/tableStyles";
+import { tabNumberStyles, tabStyles } from "../../../styles/tableStyles";
 
 export function ZonesTable({ zones }: { zones: Zone[] }) {
   const { t } = useTranslation();

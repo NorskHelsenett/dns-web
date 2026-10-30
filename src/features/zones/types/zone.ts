@@ -22,7 +22,8 @@ export const zonePaginationSchema = paginatedSchema(zoneSchema);
 export type ZonePagination = z.infer<typeof zonePaginationSchema>;
 
 export const zoneWithRecordsSchema = zoneSchema.extend({
-  records: z.array(recordSchema),
+  // The current zone detail endpoint returns zone metadata without records.
+  records: z.array(recordSchema).default([]),
 });
 
 export type ZoneWithRecords = z.infer<typeof zoneWithRecordsSchema>;

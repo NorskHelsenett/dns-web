@@ -23,8 +23,8 @@ export const zonesColumns = helper.columns([
       to="/zones/$zoneUid"
       params={{ zoneUid: z.row.original.uid }}
     >
-  {z.getValue()}
-</Link>
+      {z.getValue()}
+    </Link>
   }),
   helper.accessor("view", { header: t("zones.view")}),
   helper.accessor("comment", { 
