@@ -55,7 +55,7 @@ function ZonePage() {
           value={zone.comment || t("zones.detail.noDescription")}
         />
       </div>
-      <RecordsTable records={zone.records} />
+      <RecordsTable key={zoneUid} records={zone.records} />
     </div>
   )
 }
