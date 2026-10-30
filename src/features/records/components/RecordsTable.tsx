@@ -34,11 +34,10 @@ export function RecordsTable({ records }: { records: DnsRecord[] }) {
 
   const toolbar = (
     <div className="flex flex-wrap items-center gap-x-7 gap-y-2 border-b border-border box-x-padding py-1.5">
-      <div className="flex flex-wrap items-center gap-x-6" role="tablist" aria-label={t("records.type")}>
+      <div className="flex flex-wrap items-center gap-x-6" role="group" aria-label={t("records.type")}>
         <button
           type="button"
-          role="tab"
-          aria-selected={selectedType === null}
+          aria-pressed={selectedType === null}
           className={`${tabStyles} border-b-2 ${selectedType === null ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
           onClick={() => setSelectedType(null)}
         >
@@ -49,8 +48,7 @@ export function RecordsTable({ records }: { records: DnsRecord[] }) {
           <button
             key={type}
             type="button"
-            role="tab"
-            aria-selected={selectedType === type}
+            aria-pressed={selectedType === type}
             className={`${tabStyles} border-b-2 ${selectedType === type ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
             onClick={() => setSelectedType(type)}
           >
