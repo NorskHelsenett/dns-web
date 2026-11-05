@@ -21,7 +21,7 @@ const main: NavItem[] = [
 ];
 
 const admin: NavItem[] = [
-  { title: t("navbarTitles.rolesAndPermissions"), icon: Shield, to: "#" },
+  { title: t("navbarTitles.rolesAndPermissions"), icon: Shield, to: routes.roles },
   { title: t("navbarTitles.accessGroups"), icon: Users, to: "#" },
   { title: t("navbarTitles.settings"), icon: Settings, to: "#" },
 ];
