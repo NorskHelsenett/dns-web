@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/DataTable";
-import { Input } from "@/components/ui/input";
+import { DataTableSearch } from "@/components/data-table/DataTableSearch";
+import { DataTableTab } from "@/components/data-table/DataTableTab";
+import { DataTableToolbar } from "@/components/data-table/DataTableToolbar";
 import type { DnsRecord } from "../types/record";
 import { recordValue } from "../utils/recordValue";
 import { createRecordsColumns } from "./RecordsColumns";
-import { tabNumberStyles, tabStyles } from "@/styles/tableStyles";
 
 export function RecordsTable({ records }: { records: DnsRecord[] }) {
   const { t } = useTranslation();
@@ -33,43 +33,31 @@ export function RecordsTable({ records }: { records: DnsRecord[] }) {
   const columns = useMemo(() => createRecordsColumns(visible, t), [visible, t]);
 
   const toolbar = (
-    <div className="flex flex-wrap items-center gap-x-7 gap-y-2 border-b border-border box-x-padding py-1.5">
+    <DataTableToolbar
+      actions={
+        <DataTableSearch
+          label={t("records.search")}
+          value={query}
+          onChange={setQuery}
+        />
+      }
+    >
       <div className="flex flex-wrap items-center gap-x-6" role="group" aria-label={t("records.type")}>
-        <button
-          type="button"
-          aria-pressed={selectedType === null}
-          className={`${tabStyles} border-b-2 ${selectedType === null ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
-          onClick={() => setSelectedType(null)}
-        >
+        <DataTableTab selected={selectedType === null} count={records.length} onSelect={() => setSelectedType(null)}>
           {t("records.tabs.all")}
-          <span className={tabNumberStyles}>{records.length}</span>
-        </button>
+        </DataTableTab>
         {recordTypes.map(([type, count]) => (
-          <button
+          <DataTableTab
             key={type}
-            type="button"
-            aria-pressed={selectedType === type}
-            className={`${tabStyles} border-b-2 ${selectedType === type ? "border-primary text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"}`}
-            onClick={() => setSelectedType(type)}
+            selected={selectedType === type}
+            count={count}
+            onSelect={() => setSelectedType(type)}
           >
             {type}
-            <span className={tabNumberStyles}>{count}</span>
-          </button>
+          </DataTableTab>
         ))}
       </div>
-
-      <div className="relative ml-auto w-60">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-        <Input
-          type="search"
-          aria-label={t("records.search")}
-          placeholder={t("records.search")}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="h-10 pl-9"
-        />
-      </div>
-    </div>
+    </DataTableToolbar>
   );
 
   return <DataTable columns={columns} data={visible} getRowId={(r: DnsRecord) => r.uid} toolbar={toolbar} />;

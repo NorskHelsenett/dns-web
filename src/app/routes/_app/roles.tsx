@@ -114,7 +114,6 @@ function RolesPage() {
             role={selected}
             mode={isDraft ? "create" : "edit"}
             onChange={(patch) => updateRole(selected.id, patch)}
-            onDelete={() => setRoleToDelete(selected)}
             onCreate={createRole}
             onCancel={cancelDraft}
           />
