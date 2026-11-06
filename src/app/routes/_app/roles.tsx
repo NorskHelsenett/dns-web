@@ -27,10 +27,8 @@ function RolesPage() {
   const { t } = useTranslation();
   // TODO: Replace local state with queries and mutations when the roles API is ready in backend
   const [roles, setRoles] = useState<Role[]>(mockRoles);
-  const [selectedId, setSelectedId] = useState<string | undefined>("vitistack-team");
-  // A new role is only a draft until the user presses "Create role".
+  const [selectedId, setSelectedId] = useState<string | undefined>();
   const [draft, setDraft] = useState<Role | undefined>();
-  // The role the user asked to delete, while the confirmation dialog is open.
   const [roleToDelete, setRoleToDelete] = useState<Role | undefined>();
 
   const isDraft = draft !== undefined && draft.id === selectedId;
