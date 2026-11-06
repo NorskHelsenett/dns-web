@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "@/components/data-table/DataTable";
-import { Input } from "@/components/ui/input";
+import { DataTableSearch } from "@/components/data-table/DataTableSearch";
+import { DataTableTab } from "@/components/data-table/DataTableTab";
+import { DataTableToolbar } from "@/components/data-table/DataTableToolbar";
 import { zonesColumns } from "./ZonesColumns";
 import type { Zone } from "../types/zone";
-import { tabNumberStyles, tabStyles } from "../../../styles/tableStyles";
 
 export function ZonesTable({ zones }: { zones: Zone[] }) {
   const { t } = useTranslation();
@@ -22,39 +22,27 @@ export function ZonesTable({ zones }: { zones: Zone[] }) {
   }, [zones, view, query]);
 
   const toolbar = (
-    <div className="flex flex-wrap items-center gap-x-7 gap-y-2 border-b border-border box-x-padding py-1.5">
-      <span className={tabStyles}>
-        <span>{t("zones.tabs.all")}</span>
-        <span className={tabNumberStyles}>{zones.length}</span>
-      </span>
-
-      <div className="ml-auto flex flex-wrap gap-2">
-        <label className="sr-only" htmlFor="zone-view">{t("zones.view")}</label>
-        <select
-          id="zone-view"
-          value={view}
-          onChange={(e) => setView(e.target.value)}
-          className="h-10 w-40 rounded-lg border border-input bg-card px-3 text-sm"
-        >
-          <option value="">{t("zones.allViews")}</option>
-          {views.map((v) => (
-            <option key={v} value={v}>{v}</option>
-          ))}
-        </select>
-
-        <div className="relative w-60">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-          <Input
-            type="search"
-            aria-label={t("zones.search")}
-            placeholder={t("zones.search")}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="h-10 pl-9"
-          />
-        </div>
-      </div>
-    </div>
+    <DataTableToolbar
+      actions={
+        <>
+          <label className="sr-only" htmlFor="zone-view">{t("zones.view")}</label>
+          <select
+            id="zone-view"
+            value={view}
+            onChange={(event) => setView(event.target.value)}
+            className="h-10 w-40 rounded-lg border border-input bg-card px-3 text-sm"
+          >
+            <option value="">{t("zones.allViews")}</option>
+            {views.map((value) => (
+              <option key={value} value={value}>{value}</option>
+            ))}
+          </select>
+          <DataTableSearch label={t("zones.search")} value={query} onChange={setQuery} />
+        </>
+      }
+    >
+      <DataTableTab count={zones.length}>{t("zones.tabs.all")}</DataTableTab>
+    </DataTableToolbar>
   );
 
   return <DataTable columns={zonesColumns} data={visible} getRowId={(z: Zone) => z.uid} toolbar={toolbar} />;
