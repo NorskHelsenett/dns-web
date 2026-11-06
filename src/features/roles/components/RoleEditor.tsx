@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,27 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardRadioOption, CardTi
 import { useZones } from "@/features/zones";
 import { Trash } from "lucide-react";
 
-type Props = {
+interface RoleEditorProps {
   role: Role;
   mode: "create" | "edit";
   onChange: (patch: Partial<Role>) => void;
-  onDelete: () => void;
   onCreate: () => void;
   onCancel: () => void;
 };
-
-function Card1({ children }: { children: ReactNode }) {
-  return <div className="flex w-full flex-col rounded-lg border bg-card">{children}</div>;
-}
-
-function CardHeader1({ title, subtext }: { title: string; subtext?: string }) {
-  return (
-    <div className="box-padding flex items-center gap-3 border-b">
-      <h2 className="text-sm font-semibold">{title}</h2>
-      {subtext && <span className="text-sm text-muted-foreground">{subtext}</span>}
-    </div>
-  );
-}
 
 function AddZoneSelect({
   zones,
@@ -60,7 +45,7 @@ function AddZoneSelect({
   );
 }
 
-export function RoleEditor({ role, mode, onChange, onDelete, onCreate, onCancel }: Props) {
+export function RoleEditor({ role, mode, onChange, onCreate, onCancel }: RoleEditorProps) {
   const { t } = useTranslation();
   const disabled = role.readOnly;
   const creating = mode === "create";
