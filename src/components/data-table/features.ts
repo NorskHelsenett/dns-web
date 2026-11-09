@@ -2,8 +2,10 @@ import {
   tableFeatures,
   rowSortingFeature,
   rowPaginationFeature,
+  rowExpandingFeature,
   createSortedRowModel,
   createPaginatedRowModel,
+  createExpandedRowModel,
   sortFns,
   columnSizingFeature,
 } from "@tanstack/react-table";
@@ -11,7 +13,9 @@ import {
 export const tableFeaturesConfig = tableFeatures({
   rowSortingFeature,
   rowPaginationFeature,
+  rowExpandingFeature,
   sortedRowModel: createSortedRowModel(),
+  expandedRowModel: createExpandedRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
   sortFns,
   columnSizingFeature,
