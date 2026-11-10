@@ -4,6 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { tableFeaturesConfig, type AppFeatures } from "./features";
 import { Fragment, type ReactNode } from "react";
+import { cn } from "cn";
+
+const shrinkColumns = new Set(["favorited", "expand", "timestamp"]);
+const shrinkClass = (columnId: string) => (shrinkColumns.has(columnId) ? "w-px whitespace-nowrap" : "");
 
 type DataTableProps<T extends RowData> = {
   columns: ColumnDef<AppFeatures, T>[];
@@ -40,7 +44,6 @@ function DataTableContent<T extends RowData>({
       getRowId,
       getRowCanExpand: (row) => !row.getIsGrouped() && renderRowDetails !== undefined,
       groupedColumnMode: false,
-      // Paginate top-level groups, keeping all their events on the same page.
       paginateExpandedRows: false,
       initialState: {
         grouping: grouping ?? [],
@@ -70,7 +73,6 @@ function DataTableContent<T extends RowData>({
               {renderGroupHeader ? renderGroupHeader(row) : String(row.groupingValue)}
             </th>
           </tr>
-          {/* Date-style section headings stay open; TanStack supplies the group hierarchy. */}
           {row.subRows.map(renderRow)}
         </Fragment>
       );
@@ -83,7 +85,7 @@ function DataTableContent<T extends RowData>({
           {row.getAllCells().map((cell) => (
             <td
               key={cell.id}
-              className={`box-x-padding py-2 align-middle ${cell.column.id === "favorited" ? "w-px" : ""}`}
+              className={cn("box-x-padding py-2 align-middle", shrinkClass(cell.column.id))}
             >
               <table.FlexRender cell={cell} />
             </td>
@@ -115,7 +117,7 @@ function DataTableContent<T extends RowData>({
                       aria-sort={
                         sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : canSort ? "none" : undefined
                       }
-                      className={`box-x-padding text-xs font-semibold text-muted-foreground ${header.column.id === "favorited" ? "w-px" : ""}`}
+                      className={cn("box-x-padding text-xs font-semibold text-muted-foreground", shrinkClass(header.column.id))}
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <button
