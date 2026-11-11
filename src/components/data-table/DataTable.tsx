@@ -1,44 +1,109 @@
-import { useTable, type ColumnDef, type RowData } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
+import { useTable, type ColumnDef, type GroupingState, type Row, type RowData } from "@tanstack/react-table";
+import { ArrowDown, ArrowUp, ChevronsUpDown, MoveLeft, MoveRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { tableFeaturesConfig, type AppFeatures } from "./features";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
+import { cn } from "cn";
+
+const shrinkColumns = new Set(["favorited", "expand", "timestamp"]);
+const shrinkClass = (columnId: string) => (shrinkColumns.has(columnId) ? "w-px whitespace-nowrap" : "");
 
 type DataTableProps<T extends RowData> = {
   columns: ColumnDef<AppFeatures, T>[];
   data: T[];
   getRowId: (row: T) => string;
   toolbar?: ReactNode;
+  pageSize?: number;
+  label?: string;
+  grouping?: GroupingState;
+  renderGroupHeader?: (row: Row<AppFeatures, T>) => ReactNode;
+  renderRowDetails?: (row: T) => ReactNode;
+  paginationResetKey?: string;
 };
 
-export function DataTable<T extends RowData>({ columns, data, getRowId, toolbar }: DataTableProps<T>) {
+export function DataTable<T extends RowData>({ toolbar, paginationResetKey, ...props }: DataTableProps<T>) {
+  return (
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
+      {toolbar}
+      <DataTableContent key={paginationResetKey} {...props} />
+    </div>
+  );
+}
+
+function DataTableContent<T extends RowData>({
+  columns, data, getRowId, pageSize: initialPageSize = 20,
+  label, grouping, renderGroupHeader, renderRowDetails,
+}: Omit<DataTableProps<T>, "toolbar" | "paginationResetKey">) {
   const { t } = useTranslation();
   const table = useTable(
     {
-        features: tableFeaturesConfig,
-        columns,
-        data,
-        getRowId,
-        initialState: { pagination: { pageIndex: 0, pageSize: 20 } },
+      features: tableFeaturesConfig,
+      columns,
+      data,
+      getRowId,
+      getRowCanExpand: (row) => !row.getIsGrouped() && renderRowDetails !== undefined,
+      groupedColumnMode: false,
+      paginateExpandedRows: false,
+      initialState: {
+        grouping: grouping ?? [],
+        pagination: { pageIndex: 0, pageSize: initialPageSize },
+      },
     },
-    (state) => ({ 
+    (state) => ({
       pagination: state.pagination,
-      sorting: state.sorting, 
+      sorting: state.sorting,
+      expanded: state.expanded,
+      grouping: state.grouping,
     }),
   );
 
   const rows = table.getRowModel().rows;
-  const { pageIndex, pageSize } = table.state.pagination; 
+  const { pageIndex, pageSize } = table.state.pagination;
   const total = table.getRowCount();
   const from = rows.length ? pageIndex * pageSize + 1 : 0;
   const to = pageIndex * pageSize + rows.length;
 
+  function renderRow(row: Row<AppFeatures, T>): ReactNode {
+    if (row.getIsGrouped()) {
+      return (
+        <Fragment key={row.id}>
+          <tr className="border-b border-border bg-muted/40">
+            <th scope="rowgroup" colSpan={columns.length} className="box-x-padding py-2 text-left text-xs font-medium text-muted-foreground">
+              {renderGroupHeader ? renderGroupHeader(row) : String(row.groupingValue)}
+            </th>
+          </tr>
+          {row.subRows.map(renderRow)}
+        </Fragment>
+      );
+    }
+
+    const details = row.getIsExpanded() ? renderRowDetails?.(row.original) : null;
+    return (
+      <Fragment key={row.id}>
+        <tr className="h-16 border-b border-border last:border-b-0 hover:bg-muted/40">
+          {row.getAllCells().map((cell) => (
+            <td
+              key={cell.id}
+              className={cn("box-x-padding py-2 align-middle", shrinkClass(cell.column.id))}
+            >
+              <table.FlexRender cell={cell} />
+            </td>
+          ))}
+        </tr>
+        {details && (
+          <tr className="border-b border-border bg-background/70">
+            <td colSpan={columns.length} className="box-x-padding py-5">{details}</td>
+          </tr>
+        )}
+      </Fragment>
+    );
+  }
+
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-card">
-      {toolbar}
+    <>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-sm">
+        <table aria-label={label} className="w-full border-collapse text-sm">
           <thead>
             {table.getHeaderGroups().map((group) => (
               <tr key={group.id} className="h-10 border-b border-border bg-muted/50 text-left">
@@ -52,7 +117,7 @@ export function DataTable<T extends RowData>({ columns, data, getRowId, toolbar 
                       aria-sort={
                         sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : canSort ? "none" : undefined
                       }
-                      className={`box-x-padding text-xs font-semibold text-muted-foreground ${header.column.id === "favorited" ? "w-px" : ""}`}
+                      className={cn("box-x-padding text-xs font-semibold text-muted-foreground", shrinkClass(header.column.id))}
                     >
                       {header.isPlaceholder ? null : header.column.getCanSort() ? (
                         <button
@@ -86,37 +151,35 @@ export function DataTable<T extends RowData>({ columns, data, getRowId, toolbar 
                 </td>
               </tr>
             ) : (
-              rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="h-16 border-b border-border last:border-b-0 hover:bg-muted/40"
-                >
-                  {row.getAllCells().map((cell) => (
-                    <td 
-                      key={cell.id} 
-                      className={`box-x-padding py-2 align-middle ${cell.column.id === "favorited" ? "w-px" : ""}`}
-                    >
-                      <table.FlexRender cell={cell} />
-                    </td>
-                  ))}
-                </tr>
-              ))
+              rows.map(renderRow)
             )}
           </tbody>
         </table>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border box-x-padding py-3 text-sm text-muted-foreground">
-        <span className="tabular-nums">{t("table.showing", { from, to, total })}</span>
+        <span className="tabular-nums">{t(table.state.grouping.length ? "table.showingGroups" : "table.showing", { from, to, total })}</span>
         <div className="flex gap-2">
-          {table.getCanPreviousPage() && <Button variant="outline" size="sm" onClick={() => table.previousPage()}>
-            {t("table.previous")}
-          </Button>}
-          {table.getCanNextPage() && <Button variant="outline" size="sm" onClick={() => table.nextPage()}>
-            {t("table.next")}
-          </Button>}
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={t("table.previous")}
+            disabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+          >
+            <MoveLeft aria-hidden="true" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={t("table.next")}
+            disabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+          >
+            <MoveRight aria-hidden="true" />
+          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }

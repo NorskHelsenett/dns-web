@@ -17,7 +17,7 @@ const main: NavItem[] = [
   { title: t("navbarTitles.myPage"), icon: Home, to: routes.home },
   { title: t("navbarTitles.zones"), icon: Globe, to: routes.zones },
   { title: t("navbarTitles.pendingChanges"), icon: GitBranch, to: "#", badge: 4 },
-  { title: t("navbarTitles.auditLog"), icon: ClipboardClock, to: "#" },
+  { title: t("navbarTitles.auditLog"), icon: ClipboardClock, to: routes.auditLog },
 ];
 
 const admin: NavItem[] = [
