@@ -322,8 +322,6 @@ export const en: Translations = {
     },
   },
   table: {
-    previous: "Previous",
-    next: "Next",
     empty: "No results",
     showing: "Showing {{from}}-{{to}} of {{total}}",
     showingGroups: "Showing {{from}}-{{to}} of {{total}} groups",
