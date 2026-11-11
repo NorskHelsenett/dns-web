@@ -1,5 +1,5 @@
 import { useTable, type ColumnDef, type GroupingState, type Row, type RowData } from "@tanstack/react-table";
-import { ArrowDown, ArrowUp, ChevronsUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronsUpDown, MoveLeft, MoveRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { tableFeaturesConfig, type AppFeatures } from "./features";
@@ -161,10 +161,10 @@ function DataTableContent<T extends RowData>({
         <span className="tabular-nums">{t(table.state.grouping.length ? "table.showingGroups" : "table.showing", { from, to, total })}</span>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>
-            {t("table.previous")}
+            <MoveLeft />
           </Button>
           <Button variant="outline" size="sm" disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>
-            {t("table.next")}
+            <MoveRight />
           </Button>
         </div>
       </div>
