@@ -160,11 +160,23 @@ function DataTableContent<T extends RowData>({
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border box-x-padding py-3 text-sm text-muted-foreground">
         <span className="tabular-nums">{t(table.state.grouping.length ? "table.showingGroups" : "table.showing", { from, to, total })}</span>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" disabled={!table.getCanPreviousPage()} onClick={() => table.previousPage()}>
-            <MoveLeft />
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={t("table.previous")}
+            disabled={!table.getCanPreviousPage()}
+            onClick={() => table.previousPage()}
+          >
+            <MoveLeft aria-hidden="true" />
           </Button>
-          <Button variant="outline" size="sm" disabled={!table.getCanNextPage()} onClick={() => table.nextPage()}>
-            <MoveRight />
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={t("table.next")}
+            disabled={!table.getCanNextPage()}
+            onClick={() => table.nextPage()}
+          >
+            <MoveRight aria-hidden="true" />
           </Button>
         </div>
       </div>

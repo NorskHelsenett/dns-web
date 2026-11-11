@@ -23,7 +23,7 @@ export function AuditEventDetails({ event, onCorrelation }: { event: AuditEvent;
   ];
 
   return (
-    <div className="sm:pl-12">
+    <div id={`details-${event.id}`} className="sm:pl-12">
       <dl className="grid grid-cols-1 sm:grid-cols-[8rem_1fr] items-baseline gap-y-3 mb-6">
         {fields.map(({ label, value }) => <div key={label} className="contents">
           <dt className="text-muted-foreground">{label}</dt>

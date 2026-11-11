@@ -323,6 +323,8 @@ export const nb = {
     },
   },
   table: {
+    previous: "Forrige side",
+    next: "Neste side",
     empty: "Tomt resultat",
     showing: "Viser {{from}}-{{to}} av {{total}}",
     showingGroups: "Viser {{from}}-{{to}} av {{total}} grupper",
