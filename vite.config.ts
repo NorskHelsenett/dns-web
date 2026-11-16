@@ -29,9 +29,9 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/v1": "http://localhost:18080",
+      "/v1": "http://localhost:8080",
       "/api": {
-        target: "http://localhost:18080",
+        target: "http://localhost:8080",
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },

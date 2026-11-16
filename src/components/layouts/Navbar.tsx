@@ -9,14 +9,19 @@ import { routes } from "@/config/routes";
 import Logo from "./Logo";
 import { t } from "i18next";
 
+import { usePendingChanges } from "@/features/pending-changes/hooks/usePendingChanges";
+
 type NavItem = { title: string; icon: LucideIcon; to: string; badge?: number };
+
+
+const pendingChangesBadge = (usePendingChanges().data?.zoneChanges?.length ?? 0) + (usePendingChanges().data?.recordChanges?.changes?.length ?? 0)
 
 // TODO: fix routes as pages are implemented
 // TODO: fix API call for pending changes number
 const main: NavItem[] = [
   { title: t("navbarTitles.myPage"), icon: Home, to: routes.home },
   { title: t("navbarTitles.zones"), icon: Globe, to: routes.zones },
-  { title: t("navbarTitles.pendingChanges"), icon: GitBranch, to: "#", badge: 4 },
+  { title: t("navbarTitles.pendingChanges"), icon: GitBranch, to: routes.pendingChanges, badge: pendingChangesBadge  },
   { title: t("navbarTitles.auditLog"), icon: ClipboardClock, to: "#" },
 ];
 

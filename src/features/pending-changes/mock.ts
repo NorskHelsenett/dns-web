@@ -1,0 +1,273 @@
+import type { ZoneChanges, RecordChanges } from "./types/pendingChanges";
+
+// Mock data for Zone Changes API endpoint
+export const mockZoneChanges: ZoneChanges[] = [
+  {
+    zone_uid: "01a1a600-37d5-78c2-af66-165e0f5d07ab",
+    name: "example.com",
+    changes: [
+      {
+        field: "default_ttl",
+        oldvalue: 3600,
+        newvalue: 7200,
+        change_uid: "change-001",
+        changed_by: "user@example.com",
+        changed_at: "2024-06-06T14:00:00Z",
+      },
+      {
+        field: "negative_ttl",
+        oldvalue: 120,
+        newvalue: 60,
+        change_uid: "change-001",
+        changed_by: "user@example.com",
+        changed_at: "2024-06-06T14:00:00Z",
+      },
+    ],
+  },
+  {
+    zone_uid: "01a1a600-37d5-78ca-a6ed-2b5b084e2063",
+    name: "example.org",
+    changes: [
+      {
+        field: "default_ttl",
+        oldvalue: 7200,
+        newvalue: 3600,
+        change_uid: "change-004",
+        changed_by: "admin@example.org",
+        changed_at: "2024-06-07T10:30:00Z",
+      },
+      {
+        field: "soa_email",
+        oldvalue: "admin@old.example.org",
+        newvalue: "admin@example.org",
+        change_uid: "change-004",
+        changed_by: "admin@example.org",
+        changed_at: "2024-06-07T10:30:00Z",
+      },
+    ],
+  },
+  {
+    zone_uid: "01a1a600-37d5-78cb-b8ef-45c82b9d1234",
+    name: "mysite.io",
+    changes: [
+      {
+        field: "dnssec_enabled",
+        oldvalue: false,
+        newvalue: true,
+        change_uid: "change-006",
+        changed_by: "security@mysite.io",
+        changed_at: "2024-06-08T09:15:00Z",
+      },
+    ],
+  },
+  // {
+  //   zone_uid: "01a1a600-37d5-78cc-c8ef-45c82b9d5678",
+  //   name: "newsite.net",
+  //   changes: [
+  //     {
+  //      field: "a",
+  //       oldvalue: "10.0.0.100",
+  //       newvalue: "10.0.0.160",
+  //       change_uid: "change-007",
+  //       changed_by: "john.doe@example.com",
+  //       changed_at: "2024-06-09T13:45:00Z",
+  //     },
+  //   ],
+  // }
+];
+
+export const mockRecordChanges: RecordChanges = {
+  zone_uid: "01a1a600-37d5-78c2-af66-165e0f5d07ab",
+  records: [
+    {
+      uid: "rec-001",
+      name: "www.example.com",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.100",
+    },
+    {
+      uid: "rec-002",
+      name: "auth.example.com",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.160",
+    },
+    {
+      uid: "rec-003",
+      name: "mail.example.com",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.50",
+    },
+    {
+      uid: "rec-004",
+      name: "api.example.com",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.75",
+    },
+    {
+      uid: "rec-005",
+      name: "example.com",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.1",
+    },
+    {
+      uid: "rec-101",
+      name: "web.newsite.net",
+      ttl: 600,
+      class: "IN",
+      a: "10.0.0.160",
+    },
+    {
+      uid: "rec-201",
+      name: "cdn.company.io",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.200",
+    },
+    {
+      uid: "rec-202",
+      name: "storage.company.io",
+      ttl: 300,
+      class: "IN",
+      a: "10.0.0.201",
+    },
+  ],
+  changes: [
+    // Change 1: Single record change (most common case)
+    {
+      record_uid: "rec-001",
+      field: "a",
+      oldvalue: "10.0.0.1",
+      newvalue: "10.0.0.100",
+      change_uid: "change-002",
+      changed_by: "user@example.com",
+      changed_at: "2024-06-06T14:30:00Z",
+    },
+    // Change 2: Multiple records updated at once (same change_uid)
+    {
+      record_uid: "rec-002",
+      field: "a",
+      oldvalue: "10.0.0.16",
+      newvalue: "10.0.0.160",
+      change_uid: "change-003",
+      changed_by: "user@example.com",
+      changed_at: "2024-06-06T15:00:00Z",
+    },
+    {
+      record_uid: "rec-003",
+      field: "a",
+      oldvalue: "10.0.0.5",
+      newvalue: "10.0.0.50",
+      change_uid: "change-003",
+      changed_by: "user@example.com",
+      changed_at: "2024-06-06T15:00:00Z",
+    },
+    // Change 3: TTL change on one record
+    {
+      record_uid: "rec-004",
+      field: "ttl",
+      oldvalue: 3600,
+      newvalue: 300,
+      change_uid: "change-005",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-06T16:00:00Z",
+    },
+    // Change 4: Multiple fields on multiple records (bulk update)
+    {
+      record_uid: "rec-001",
+      field: "ttl",
+      oldvalue: 3600,
+      newvalue: 300,
+      change_uid: "change-006",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-07T11:00:00Z",
+    },
+    {
+      record_uid: "rec-002",
+      field: "ttl",
+      oldvalue: 3600,
+      newvalue: 300,
+      change_uid: "change-006",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-07T11:00:00Z",
+    },
+    {
+      record_uid: "rec-005",
+      field: "ttl",
+      oldvalue: 3600,
+      newvalue: 300,
+      change_uid: "change-006",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-07T11:00:00Z",
+    },
+    // Change 5: Single record modified scenario
+    {
+      record_uid: "rec-101",
+      field: "a",
+      oldvalue: "10.0.0.100",
+      newvalue: "10.0.0.160",
+      change_uid: "change-007",
+      changed_by: "john.doe@example.com",
+      changed_at: "2024-06-09T13:45:00Z",
+    },
+    // Change 6: Two new records added scenario
+    {
+      record_uid: "rec-201",
+      field: "a",
+      oldvalue: null,
+      newvalue: "10.0.0.200",
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+    {
+      record_uid: "rec-201",
+      field: "ttl",
+      oldvalue: null,
+      newvalue: 300,
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+    {
+      record_uid: "rec-201",
+      field: "class",
+      oldvalue: null,
+      newvalue: "IN",
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+    {
+      record_uid: "rec-202",
+      field: "a",
+      oldvalue: null,
+      newvalue: "10.0.0.201",
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+    {
+      record_uid: "rec-202",
+      field: "ttl",
+      oldvalue: null,
+      newvalue: 300,
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+    {
+      record_uid: "rec-202",
+      field: "class",
+      oldvalue: null,
+      newvalue: "IN",
+      change_uid: "change-008",
+      changed_by: "admin@example.com",
+      changed_at: "2024-06-09T14:20:00Z",
+    },
+  ],
+};

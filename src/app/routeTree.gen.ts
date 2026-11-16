@@ -12,8 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppMyPageRouteImport } from './routes/_app/my-page'
+import { Route as AppPendingChangesRouteRouteImport } from './routes/_app/pending-changes/route'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
 import { Route as AppZonesRouteRouteImport } from './routes/_app/zones/route'
+import { Route as AppPendingChangesIndexRouteImport } from './routes/_app/pending-changes/index'
+import { Route as AppPendingChangesChangeUidRouteImport } from './routes/_app/pending-changes/$changeUid'
 import { Route as AppZonesIndexRouteImport } from './routes/_app/zones/index'
 import { Route as AppZonesZoneUidRouteImport } from './routes/_app/zones/$zoneUid'
 import { Route as AppZonesNewRouteImport } from './routes/_app/zones/new'
@@ -32,6 +35,11 @@ const AppMyPageRoute = AppMyPageRouteImport.update({
   path: '/my-page',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppPendingChangesRouteRoute = AppPendingChangesRouteRouteImport.update({
+  id: '/pending-changes',
+  path: '/pending-changes',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppRolesRoute = AppRolesRouteImport.update({
   id: '/roles',
   path: '/roles',
@@ -42,6 +50,17 @@ const AppZonesRouteRoute = AppZonesRouteRouteImport.update({
   path: '/zones',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppPendingChangesIndexRoute = AppPendingChangesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppPendingChangesRouteRoute,
+} as any)
+const AppPendingChangesChangeUidRoute =
+  AppPendingChangesChangeUidRouteImport.update({
+    id: '/$changeUid',
+    path: '/$changeUid',
+    getParentRoute: () => AppPendingChangesRouteRoute,
+  } as any)
 const AppZonesIndexRoute = AppZonesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -60,53 +79,75 @@ const AppZonesNewRoute = AppZonesNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/pending-changes': typeof AppPendingChangesRouteRouteWithChildren
   '/zones': typeof AppZonesRouteRouteWithChildren
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
+  '/pending-changes/$changeUid': typeof AppPendingChangesChangeUidRoute
   '/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/zones/new': typeof AppZonesNewRoute
+  '/pending-changes/': typeof AppPendingChangesIndexRoute
   '/zones/': typeof AppZonesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
+  '/pending-changes/$changeUid': typeof AppPendingChangesChangeUidRoute
   '/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/zones/new': typeof AppZonesNewRoute
+  '/pending-changes': typeof AppPendingChangesIndexRoute
   '/zones': typeof AppZonesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteRouteWithChildren
+  '/_app/pending-changes': typeof AppPendingChangesRouteRouteWithChildren
   '/_app/zones': typeof AppZonesRouteRouteWithChildren
   '/_app/my-page': typeof AppMyPageRoute
   '/_app/roles': typeof AppRolesRoute
+  '/_app/pending-changes/$changeUid': typeof AppPendingChangesChangeUidRoute
   '/_app/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/_app/zones/new': typeof AppZonesNewRoute
+  '/_app/pending-changes/': typeof AppPendingChangesIndexRoute
   '/_app/zones/': typeof AppZonesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/pending-changes'
     | '/zones'
     | '/my-page'
     | '/roles'
+    | '/pending-changes/$changeUid'
     | '/zones/$zoneUid'
     | '/zones/new'
+    | '/pending-changes/'
     | '/zones/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/my-page' | '/roles' | '/zones/$zoneUid' | '/zones/new' | '/zones'
+  to:
+    | '/'
+    | '/my-page'
+    | '/roles'
+    | '/pending-changes/$changeUid'
+    | '/zones/$zoneUid'
+    | '/zones/new'
+    | '/pending-changes'
+    | '/zones'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/_app/pending-changes'
     | '/_app/zones'
     | '/_app/my-page'
     | '/_app/roles'
+    | '/_app/pending-changes/$changeUid'
     | '/_app/zones/$zoneUid'
     | '/_app/zones/new'
+    | '/_app/pending-changes/'
     | '/_app/zones/'
   fileRoutesById: FileRoutesById
 }
@@ -138,6 +179,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMyPageRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/pending-changes': {
+      id: '/_app/pending-changes'
+      path: '/pending-changes'
+      fullPath: '/pending-changes'
+      preLoaderRoute: typeof AppPendingChangesRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/roles': {
       id: '/_app/roles'
       path: '/roles'
@@ -151,6 +199,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/zones'
       preLoaderRoute: typeof AppZonesRouteRouteImport
       parentRoute: typeof AppRouteRoute
+    }
+    '/_app/pending-changes/': {
+      id: '/_app/pending-changes/'
+      path: '/'
+      fullPath: '/pending-changes/'
+      preLoaderRoute: typeof AppPendingChangesIndexRouteImport
+      parentRoute: typeof AppPendingChangesRouteRoute
+    }
+    '/_app/pending-changes/$changeUid': {
+      id: '/_app/pending-changes/$changeUid'
+      path: '/$changeUid'
+      fullPath: '/pending-changes/$changeUid'
+      preLoaderRoute: typeof AppPendingChangesChangeUidRouteImport
+      parentRoute: typeof AppPendingChangesRouteRoute
     }
     '/_app/zones/': {
       id: '/_app/zones/'
@@ -176,6 +238,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppPendingChangesRouteRouteChildren {
+  AppPendingChangesChangeUidRoute: typeof AppPendingChangesChangeUidRoute
+  AppPendingChangesIndexRoute: typeof AppPendingChangesIndexRoute
+}
+
+const AppPendingChangesRouteRouteChildren: AppPendingChangesRouteRouteChildren =
+  {
+    AppPendingChangesChangeUidRoute: AppPendingChangesChangeUidRoute,
+    AppPendingChangesIndexRoute: AppPendingChangesIndexRoute,
+  }
+
+const AppPendingChangesRouteRouteWithChildren =
+  AppPendingChangesRouteRoute._addFileChildren(
+    AppPendingChangesRouteRouteChildren,
+  )
+
 interface AppZonesRouteRouteChildren {
   AppZonesZoneUidRoute: typeof AppZonesZoneUidRoute
   AppZonesNewRoute: typeof AppZonesNewRoute
@@ -193,12 +271,14 @@ const AppZonesRouteRouteWithChildren = AppZonesRouteRoute._addFileChildren(
 )
 
 interface AppRouteRouteChildren {
+  AppPendingChangesRouteRoute: typeof AppPendingChangesRouteRouteWithChildren
   AppZonesRouteRoute: typeof AppZonesRouteRouteWithChildren
   AppMyPageRoute: typeof AppMyPageRoute
   AppRolesRoute: typeof AppRolesRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppPendingChangesRouteRoute: AppPendingChangesRouteRouteWithChildren,
   AppZonesRouteRoute: AppZonesRouteRouteWithChildren,
   AppMyPageRoute: AppMyPageRoute,
   AppRolesRoute: AppRolesRoute,

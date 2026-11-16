@@ -13,10 +13,13 @@ function AppLayout(): ReactElement {
   const matches = useMatches();
 
   const breadcrumbs = matches.flatMap((match) => {
-    const dynamic = (match.loaderData as { crumb?: string } | undefined)?.crumb;
+    const loaderData = match.loaderData as
+      | { crumb?: string; parentCrumbs?: { title: string; url: string }[] }
+      | undefined;
+    const dynamic = loaderData?.crumb;
     const staticKey = match.staticData?.crumb;
     const title = dynamic ?? (staticKey ? i18n.t(staticKey) : undefined);
-    return title ? [{ title, url: match.pathname }] : [];
+    return [...(loaderData?.parentCrumbs ?? []), ...(title ? [{ title, url: match.pathname }] : [])];
   });
   return (
     <SidebarProvider>
