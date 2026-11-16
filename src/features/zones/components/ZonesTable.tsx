@@ -37,7 +37,7 @@ export function ZonesTable({ zones }: { zones: Zone[] }) {
               <option key={value} value={value}>{value}</option>
             ))}
           </select>
-          <DataTableSearch label={t("zones.search")} value={query} onChange={setQuery} />
+          <DataTableSearch label={t("general.search")} value={query} onChange={setQuery} />
         </>
       }
     >
