@@ -90,16 +90,16 @@ function RolesPage() {
 
   return (
     <div className="page-flex-setup">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <header className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-medium">{t("navbarTitles.rolesAndPermissions")}</h1>
+          <h1>{t("navbarTitles.rolesAndPermissions")}</h1>
           <p className="text-muted-foreground">{t("roles.subtitle")}</p>
         </div>
         <Button size="lg" onClick={startNewRole}>
           <Plus />
           {t("roles.newRole")}
         </Button>
-      </div>
+      </header>
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[17rem_1fr]">
         <RolesList

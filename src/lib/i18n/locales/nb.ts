@@ -25,6 +25,24 @@ export const nb = {
     accessGroups: "Tilgangsgrupper",
     settings: "Innstillinger",
   },
+  settings: {
+    description: "Standardvalg for hele panelet.",
+    save: "Lagre",
+    zoneDefaults: {
+      title: "Standardverdier for soner",
+      description:
+        "Brukes når noen oppretter en sone. De kan endre dette for sonen. Eksisterende soner påvirkes ikke.",
+      defaultTtl: "Standard TTL",
+      defaultTtlDescription: "Hvor lenge oppslagsservere kan mellomlagre en post uten egen TTL.",
+      ttlOptions: {
+        fiveMinutes: "5 minutter",
+        oneHour: "1 time",
+        fourHours: "4 timer",
+        twelveHours: "12 timer",
+        oneDay: "1 dag",
+      },
+    },
+  },
   myPage: {
     zonesInProgress: {
       title: "Soner under arbeid",

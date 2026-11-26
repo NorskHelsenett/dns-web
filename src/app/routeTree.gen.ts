@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppMyPageRouteImport } from './routes/_app/my-page'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppZonesRouteRouteImport } from './routes/_app/zones/route'
 import { Route as AppZonesIndexRouteImport } from './routes/_app/zones/index'
 import { Route as AppZonesZoneUidRouteImport } from './routes/_app/zones/$zoneUid'
@@ -35,6 +36,11 @@ const AppMyPageRoute = AppMyPageRouteImport.update({
 const AppRolesRoute = AppRolesRouteImport.update({
   id: '/roles',
   path: '/roles',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppZonesRouteRoute = AppZonesRouteRouteImport.update({
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/zones': typeof AppZonesRouteRouteWithChildren
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
+  '/settings': typeof AppSettingsRoute
   '/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/zones/new': typeof AppZonesNewRoute
   '/zones/': typeof AppZonesIndexRoute
@@ -71,6 +78,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
+  '/settings': typeof AppSettingsRoute
   '/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/zones/new': typeof AppZonesNewRoute
   '/zones': typeof AppZonesIndexRoute
@@ -82,6 +90,7 @@ export interface FileRoutesById {
   '/_app/zones': typeof AppZonesRouteRouteWithChildren
   '/_app/my-page': typeof AppMyPageRoute
   '/_app/roles': typeof AppRolesRoute
+  '/_app/settings': typeof AppSettingsRoute
   '/_app/zones/$zoneUid': typeof AppZonesZoneUidRoute
   '/_app/zones/new': typeof AppZonesNewRoute
   '/_app/zones/': typeof AppZonesIndexRoute
@@ -93,11 +102,19 @@ export interface FileRouteTypes {
     | '/zones'
     | '/my-page'
     | '/roles'
+    | '/settings'
     | '/zones/$zoneUid'
     | '/zones/new'
     | '/zones/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/my-page' | '/roles' | '/zones/$zoneUid' | '/zones/new' | '/zones'
+  to:
+    | '/'
+    | '/my-page'
+    | '/roles'
+    | '/settings'
+    | '/zones/$zoneUid'
+    | '/zones/new'
+    | '/zones'
   id:
     | '__root__'
     | '/'
@@ -105,6 +122,7 @@ export interface FileRouteTypes {
     | '/_app/zones'
     | '/_app/my-page'
     | '/_app/roles'
+    | '/_app/settings'
     | '/_app/zones/$zoneUid'
     | '/_app/zones/new'
     | '/_app/zones/'
@@ -143,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/roles'
       fullPath: '/roles'
       preLoaderRoute: typeof AppRolesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/zones': {
@@ -196,12 +221,14 @@ interface AppRouteRouteChildren {
   AppZonesRouteRoute: typeof AppZonesRouteRouteWithChildren
   AppMyPageRoute: typeof AppMyPageRoute
   AppRolesRoute: typeof AppRolesRoute
+  AppSettingsRoute: typeof AppSettingsRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppZonesRouteRoute: AppZonesRouteRouteWithChildren,
   AppMyPageRoute: AppMyPageRoute,
   AppRolesRoute: AppRolesRoute,
+  AppSettingsRoute: AppSettingsRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
