@@ -3,4 +3,5 @@ export const routes = {
   zones: "/zones",
   roles: "/roles",
   auditLog: "/audit-log",
+  settings: "/settings",
 };

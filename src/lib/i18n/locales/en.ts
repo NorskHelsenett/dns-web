@@ -43,6 +43,24 @@ export const en: Translations = {
     accessGroups: "Access groups",
     settings: "Settings",
   },
+  settings: {
+    description: "Defaults for the whole panel.",
+    save: "Save",
+    zoneDefaults: {
+      title: "Zone defaults",
+      description:
+        "Used when someone creates a zone. They can change it for that zone. Existing zones are not affected.",
+      defaultTtl: "Default TTL",
+      defaultTtlDescription: "How long resolvers may cache a record when it has no TTL of its own.",
+      ttlOptions: {
+        fiveMinutes: "5 minutes",
+        oneHour: "1 hour",
+        fourHours: "4 hours",
+        twelveHours: "12 hours",
+        oneDay: "1 day",
+      },
+    },
+  },
   zones: {
     zone: "Zone",
     zones: "Zones",
