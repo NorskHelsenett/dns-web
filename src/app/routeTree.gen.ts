@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
+import { Route as AppAuditLogRouteImport } from './routes/_app/audit-log'
 import { Route as AppMyPageRouteImport } from './routes/_app/my-page'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppAuditLogRoute = AppAuditLogRouteImport.update({
+  id: '/audit-log',
+  path: '/audit-log',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const AppMyPageRoute = AppMyPageRouteImport.update({
   id: '/my-page',
@@ -67,6 +73,7 @@ const AppZonesNewRoute = AppZonesNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/zones': typeof AppZonesRouteRouteWithChildren
+  '/audit-log': typeof AppAuditLogRoute
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
   '/settings': typeof AppSettingsRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audit-log': typeof AppAuditLogRoute
   '/my-page': typeof AppMyPageRoute
   '/roles': typeof AppRolesRoute
   '/settings': typeof AppSettingsRoute
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteRouteWithChildren
   '/_app/zones': typeof AppZonesRouteRouteWithChildren
+  '/_app/audit-log': typeof AppAuditLogRoute
   '/_app/my-page': typeof AppMyPageRoute
   '/_app/roles': typeof AppRolesRoute
   '/_app/settings': typeof AppSettingsRoute
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/zones'
+    | '/audit-log'
     | '/my-page'
     | '/roles'
     | '/settings'
@@ -111,6 +121,9 @@ export interface FileRouteTypes {
     | '/'
     | '/my-page'
     | '/roles'
+    | '/audit-log'
+    | '/my-page'
+    | '/roles'
     | '/settings'
     | '/zones/$zoneUid'
     | '/zones/new'
@@ -120,6 +133,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/_app/zones'
+    | '/_app/audit-log'
     | '/_app/my-page'
     | '/_app/roles'
     | '/_app/settings'
@@ -148,6 +162,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/audit-log': {
+      id: '/_app/audit-log'
+      path: '/audit-log'
+      fullPath: '/audit-log'
+      preLoaderRoute: typeof AppAuditLogRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/_app/my-page': {
       id: '/_app/my-page'
@@ -219,6 +240,7 @@ const AppZonesRouteRouteWithChildren = AppZonesRouteRoute._addFileChildren(
 
 interface AppRouteRouteChildren {
   AppZonesRouteRoute: typeof AppZonesRouteRouteWithChildren
+  AppAuditLogRoute: typeof AppAuditLogRoute
   AppMyPageRoute: typeof AppMyPageRoute
   AppRolesRoute: typeof AppRolesRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -226,6 +248,7 @@ interface AppRouteRouteChildren {
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppZonesRouteRoute: AppZonesRouteRouteWithChildren,
+  AppAuditLogRoute: AppAuditLogRoute,
   AppMyPageRoute: AppMyPageRoute,
   AppRolesRoute: AppRolesRoute,
   AppSettingsRoute: AppSettingsRoute,

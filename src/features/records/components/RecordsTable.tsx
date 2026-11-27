@@ -36,7 +36,7 @@ export function RecordsTable({ records }: { records: DnsRecord[] }) {
     <DataTableToolbar
       actions={
         <DataTableSearch
-          label={t("records.search")}
+          label={t("general.search")}
           value={query}
           onChange={setQuery}
         />
